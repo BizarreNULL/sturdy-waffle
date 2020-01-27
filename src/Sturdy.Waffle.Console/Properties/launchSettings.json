@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Sturdy.Waffle.Console": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "STURDY_WAFFLE_ENVIRONMENT": "Development"
+      },
+      "nativeDebugging": true
+    }
+  }
+}
