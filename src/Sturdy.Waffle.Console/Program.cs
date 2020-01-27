@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -21,6 +22,8 @@ namespace Sturdy.Waffle.Console
                     .AddJsonFile("Sturdy.Waffle.Configuration.json");
                 _configuration = builder.Build();
 
+                hostingContext.HostingEnvironment.EnvironmentName =
+                    Environment.GetEnvironmentVariable("STURDY_WAFFLE_ENVIRONMENT");
                 _environment = hostingContext.HostingEnvironment;
             })
             .ConfigureLogging(logging =>
