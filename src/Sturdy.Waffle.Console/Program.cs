@@ -1,7 +1,11 @@
 ﻿using System.Threading.Tasks;
 
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+
+using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
 
 namespace Sturdy.Waffle.Console
 {
@@ -19,9 +23,23 @@ namespace Sturdy.Waffle.Console
 
                 _environment = hostingContext.HostingEnvironment;
             })
+            .ConfigureLogging(logging =>
+            {
+                logging.ClearProviders();
+
+                var log = new LoggerConfiguration()
+                    .MinimumLevel.Verbose()
+                    .Enrich.FromLogContext()
+                    .WriteTo.Console(
+                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level}] {SourceContext} {Message}{NewLine}{Exception}",
+                        theme: AnsiConsoleTheme.Code)
+                    .CreateLogger();
+
+                logging.AddSerilog(log);
+            })
             .ConfigureServices(services =>
             {
-
+                
             })
             .RunConsoleAsync();
     }
