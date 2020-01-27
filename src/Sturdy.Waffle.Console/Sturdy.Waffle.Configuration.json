@@ -1,3 +1,6 @@
 {
-
+  "ConnectionStrings": {
+    "Production": "Data Source = Sturdy.Waffle.Production.sqlite",
+    "Development": "Data Source = Sturdy.Waffle.Development.sqlite"
+  } 
 }
