@@ -40,7 +40,7 @@ namespace Sturdy.Waffle.Console
 
                 logging.AddSerilog(log);
             })
-            .ConfigureServices(services =>
+            .ConfigureServices(async services =>
             {
                 var connectionString = _environment.IsDevelopment()
                     ? _configuration.GetConnectionString("Development")
@@ -50,6 +50,9 @@ namespace Sturdy.Waffle.Console
                     throw new ArgumentNullException(nameof(connectionString));
 
                 services.AddDbContext<ApplicationContext>(builder => builder.UseSqlite(connectionString));
+
+                await using var context = services.BuildServiceProvider().GetService<ApplicationContext>();
+                await context.Database.EnsureCreatedAsync();
             })
             .RunConsoleAsync();
     }
