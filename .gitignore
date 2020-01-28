@@ -451,4 +451,7 @@ healthchecksdb
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
 
+# Local databases
+*.sqlite
+
 # End of https://www.gitignore.io/api/rider,dotnetcore,monodevelop,visualstudio,visualstudiocode
