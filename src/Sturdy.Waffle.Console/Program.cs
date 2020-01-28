@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
+
+using Sturdy.Waffle.Shared.Workers;
 
 namespace Sturdy.Waffle.Console
 {
@@ -53,6 +57,8 @@ namespace Sturdy.Waffle.Console
 
                 await using var context = services.BuildServiceProvider().GetService<ApplicationContext>();
                 await context.Database.EnsureCreatedAsync();
+
+                services.AddHostedService<HammerWorker>();
             })
             .RunConsoleAsync();
     }
