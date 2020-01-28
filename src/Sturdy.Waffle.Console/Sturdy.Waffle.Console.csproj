@@ -19,4 +19,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Sturdy.Waffle.Shared\Sturdy.Waffle.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
