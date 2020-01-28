@@ -10,7 +10,7 @@ using Serilog.Sinks.SystemConsole.Themes;
 
 namespace Sturdy.Waffle.Console
 {
-    internal class Program
+    internal static class Program
     {
         private static IConfiguration _configuration;
         private static IHostEnvironment _environment;
