@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
-
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 
@@ -42,7 +42,14 @@ namespace Sturdy.Waffle.Console
             })
             .ConfigureServices(services =>
             {
-                
+                var connectionString = _environment.IsDevelopment()
+                    ? _configuration.GetConnectionString("Development")
+                    : _configuration.GetConnectionString("Production");
+
+                if (string.IsNullOrEmpty(connectionString))
+                    throw new ArgumentNullException(nameof(connectionString));
+
+                services.AddDbContext<ApplicationContext>(builder => builder.UseSqlite(connectionString));
             })
             .RunConsoleAsync();
     }
