@@ -21,22 +21,39 @@ namespace Sturdy.Waffle.Shared.Workers
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            _logger.LogDebug($"{nameof(HammerWorker)} started");
+            _executingTask = ExecuteAsync(_stoppingCts.Token);
+            
+            return _executingTask.IsCompleted ? _executingTask : Task.CompletedTask; 
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        public async Task StopAsync(CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            if (_executingTask == null)
+                return;
+
+            try
+            {
+                _logger.LogInformation($"{nameof(HammerWorker)} stopping");
+                _stoppingCts.Cancel();
+            }
+            finally
+            {
+                await Task.WhenAny(_executingTask, Task.Delay(Timeout.Infinite, cancellationToken));
+            }
         }
 
         public void Dispose()
         {
-            throw new System.NotImplementedException();
+            _stoppingCts.Cancel();
         }
-
+        
         public Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            throw new System.NotImplementedException();
+            _logger.LogDebug($"{nameof(HammerWorker)} execution started");
+            _executingTask = ExecuteAsync(_stoppingCts.Token);
+
+            return _executingTask.IsCompleted ? _executingTask : Task.CompletedTask;
         }
     }
 }
